@@ -36,15 +36,15 @@ class HeaderComponent extends Component {
     render() {
         return (
             <header>
-                <nav className="navbar navbar-expand-md">
-                    <div><a>Janusz Kumor</a></div>
+                <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+                    <div><a href="https://github.com/jkumz" className="navbar-brand">Janusz Kumor</a></div>
                     <ul className="navbar-nav">
-                        <li className="nav-link">Home</li>
-                        <li className="nav-link">Todo</li>
+                        <li className="nav-link"><Link to="/welcome">Home</Link></li>
+                        <li className="nav-link"><Link to="/todo">Todo</Link></li>
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
-                        <li className="nav-link">Sign in</li>
-                        <li className="nav-link">Sign out</li>
+                        <li className="nav-link"><Link to="/login">Sign in</Link></li>
+                        <li className="nav-link"><Link to="/logout">Sign in</Link></li>
                     </ul>
                 </nav>
             </header>
