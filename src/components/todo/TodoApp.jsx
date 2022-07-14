@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom" // to assign components to routes in url
 import withNavigation from "./WithNavigation.jsx";
 import withParams from "./withParams.jsx";
+import AuthenticationService from "./AuthenticationService.js";
 
 class TodoApp extends Component {
     render() {
@@ -41,7 +42,7 @@ class HeaderComponent extends Component {
                     <div><a href="https://github.com/jkumz" className="navbar-brand">Janusz Kumor</a></div>
                     <ul className="navbar-nav">
                         <li className="nav-link"><Link to="/welcome/Janusz">Home</Link></li>
-                        <li className="nav-link"><Link to="/todo">Todo</Link></li>
+                        <li className="nav-link"><Link to="/todo" onClick={AuthenticationService.logout}>Todo</Link></li>
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
                         <li className="nav-link"><Link to="/login">Sign in</Link></li>
@@ -79,7 +80,9 @@ class LogoutComponent extends Component {
 }
 
 class ListTodosComponent extends Component {
+    // pass props onto constructor
     constructor(props) {
+        // in react, all consturctors need to call super(props)
         super(props)
         this.state = {
             todos:
@@ -121,6 +124,7 @@ class ListTodosComponent extends Component {
     }
 }
 
+// to be displayed on welcome page
 class WelcomeComponent extends Component {
     render() {
         return (
@@ -134,11 +138,13 @@ class WelcomeComponent extends Component {
     }
 }
 
+// to be displayed if user attempts to access an undefined route
 function ErrorComponent() {
     return <div>Error!</div>
 }
 
-// controlled component --> everything dictated by state inside login component
+// controlled component --> everything is dictated by the state inside login component
+// i.e, form data handled by state of component!
 class LoginComponent extends Component {
     constructor(props) {
         super(props);
@@ -148,6 +154,9 @@ class LoginComponent extends Component {
             hasLoginFailed: false,
             showSuccessMessage: false
         }
+        // need to bind functions to component instance, i.e in constructor
+        // this is so that these "event handler" functions can have access
+        // to the parent component (LoginComponent in this case!)
         this.handleChange = this.handleChange.bind(this)
         this.loginClick = this.loginClick.bind(this)
     }
@@ -169,6 +178,8 @@ class LoginComponent extends Component {
     // log in authentication
     loginClick() {
         if (this.state.username === 'username' && this.state.password === 'password') {
+            // store authenticated user into session storage
+            AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password);
             this.props.navigate(`/welcome/${this.state.username}`)
             //this.setState({ showSuccessMessage: true })
         }
