@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom" 
 import withNavigation from "./WithNavigation.jsx";
 import withParams from "./withParams.jsx";
 import AuthenticationService from "./AuthenticationService.js";
-
+import AuthenticatedRoute from "./AuthenticatedRoute.jsx";
 class TodoApp extends Component {
     render() {
         const LoginComponentWithNavigation = withNavigation(LoginComponent)
@@ -16,12 +16,20 @@ class TodoApp extends Component {
                         <HeaderComponentWithNavigation />
                         <Routes>
                             <Route path="/" element={<LoginComponentWithNavigation />} />
-                            {/*display login component on /login of url*/}
                             <Route path="/login" element={<LoginComponentWithNavigation />} />
                             {/*display welcome component on /welcome of url*/}
-                            <Route path="/welcome/:name" element={<WelcomeComponentWithParams />} />
-                            <Route path="/todo" element={<ListTodosComponent />} />
-                            <Route path="/logout" element={<LogoutComponent />} />
+                            <Route path="/welcome/:name" element={
+                                <AuthenticatedRoute>
+                                    <WelcomeComponentWithParams />
+                                </AuthenticatedRoute>} />
+                            <Route path="/todo" element={
+                                <AuthenticatedRoute>
+                                    <ListTodosComponent />
+                                </AuthenticatedRoute>} />
+                            <Route path="/logout" element={
+                                <AuthenticatedRoute>
+                                    <LogoutComponent />
+                                </AuthenticatedRoute>} />
                             <Route path="*" element={<ErrorComponent />} />
                         </Routes>
                         <FooterComponent />
@@ -44,7 +52,7 @@ class HeaderComponent extends Component {
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <div><a href="https://github.com/jkumz" className="navbar-brand">Janusz Kumor</a></div>
                     <ul className="navbar-nav">
-                        {isUserLoggedIn && <li className="nav-link"><Link to="/welcome/Janusz">Home</Link></li>}
+                        {isUserLoggedIn && <li className="nav-link"><Link to="/welcome/:name">Home</Link></li>}
                         {isUserLoggedIn && <li className="nav-link"><Link to="/todo">Todo</Link></li>}
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
