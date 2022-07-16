@@ -8,6 +8,7 @@ class TodoApp extends Component {
     render() {
         const LoginComponentWithNavigation = withNavigation(LoginComponent)
         const WelcomeComponentWithParams = withParams(WelcomeComponent)
+        const HeaderComponentWithNavigation = withNavigation(HeaderComponent);
         return (
             <div className="TodoApp">
                 <Router>
@@ -42,11 +43,11 @@ class HeaderComponent extends Component {
                     <div><a href="https://github.com/jkumz" className="navbar-brand">Janusz Kumor</a></div>
                     <ul className="navbar-nav">
                         <li className="nav-link"><Link to="/welcome/Janusz">Home</Link></li>
-                        <li className="nav-link"><Link to="/todo" onClick={AuthenticationService.logout}>Todo</Link></li>
+                        <li className="nav-link"><Link to="/todo">Todo</Link></li>
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
                         <li className="nav-link"><Link to="/login">Sign in</Link></li>
-                        <li className="nav-link"><Link to="/logout">Sign out</Link></li>
+                        <li className="nav-link"><Link to="/logout" onClick={AuthenticationService.logout}>Sign out</Link></li>
                     </ul>
                 </nav>
             </header>
@@ -110,7 +111,7 @@ class ListTodosComponent extends Component {
                         {
                             this.state.todos.map(
                                 item =>
-                                    <tr>
+                                    <tr key={item.id}>
                                         <td>{item.description}</td>
                                         <td>{item.done.toString()}</td>
                                         <td>{item.targetDate.toString()}</td>
@@ -130,7 +131,7 @@ class WelcomeComponent extends Component {
         return (
             <>
                 <h1>Welcome {this.props.params.name}!</h1>
-                <div class="container">
+                <div className="container">
                     You can manage your Todo List < Link to="/todo" > here.</Link >
                 </div>
             </>
